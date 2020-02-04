@@ -1,0 +1,11 @@
+{
+  "name": "modules",
+  "version": "1.0.0",
+  "description": "Loads source code files into live executable module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "djtinkers365",
+  "license": "MIT"
+}
