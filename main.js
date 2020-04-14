@@ -1,25 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const isFunc = (v) => {
-    return (typeof v === "function") && (v.toString().trim().slice(0, 5) !== "class");
-};
-const isClass = (v) => {
-    return (typeof v === "function") && (v.toString().trim().slice(0, 5) === "class");
-};
-const isArray = (v) => { return Array.isArray(v); };
-exports.modules = function (list, options) {
-    // switch (typeof options) {
+;
+const isFunc = v => ((typeof v === "function") && (v.toString().trim().slice(0, 5) !== "class"));
+const isClass = v => ((typeof v === "function") && (v.toString().trim().slice(0, 5) === "class"));
+const isArray = v => (Array.isArray(v));
+exports.modules = function (list, modifierCB) {
+    // switch (typeof modifierCB) {
     //     case "object":      break;
     //     case "function":    break;
     //     default:            break;
     // }
-    options = isFunc(options) ? options : function (v) { return v; };
-    let modules = {};
-    let funcs = [];
-    let classes = [];
-    let arrs = [];
-    let misc = [];
-    let errors = [];
+    modifierCB = isFunc(modifierCB) ? modifierCB : function (v) { return v; };
+    let modules = {}, funcs = [], classes = [], arrs = [], misc = [], errors = [];
     let m;
     list.forEach((e, i) => {
         try {
@@ -33,7 +25,7 @@ exports.modules = function (list, options) {
                 arrs.push(e);
             else
                 misc.push(e);
-            modules[e] = options(m);
+            modules[e] = modifierCB(m);
         }
         catch (error) {
             errors.push(`module failed to load: ${i} ${e} .... ${error}`);
@@ -44,8 +36,8 @@ exports.modules = function (list, options) {
     }
     return {
         modules,
-        funcs,
         classes,
+        funcs,
         arrs,
         misc
     };
